@@ -1,0 +1,16 @@
+# Raw data snapshots (large, re-generatable)
+data/raw/
+
+# Heavy source files not needed for the web app
+"Medical examiner data.csv"
+"Opioid Related mortality.csv"
+"Opioid-related ED Visits.csv"
+"Opioid-related ED visits (age adjusted).csv"
+"Opioid-related overdoses.csv"
+"County Mortality _ Morbidity - "*.csv
+"Mortality _ Morbidity - Statewide header"*.csv
+*.xlsx
+*.pdf
+__pycache__/
+*.pyc
+.DS_Store

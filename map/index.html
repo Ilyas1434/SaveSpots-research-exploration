@@ -129,6 +129,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;b
     <div class="tab" data-t="placement" onclick="tab('placement')">Placement</div>
     <div class="tab" data-t="environment" onclick="tab('environment')">Environment</div>
     <div class="tab" data-t="insights" onclick="tab('insights')">Insights</div>
+    <div class="tab" data-t="about" onclick="tab('about')">About</div>
   </div>
 
   <div id="inner">
@@ -214,6 +215,69 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;b
         <ul class="sources" id="sources"></ul>
       </div>
     </div>
+    <!-- ABOUT -->
+    <div id="pane-about" class="pane">
+      <div class="card">
+        <div class="card-title">What is SaveSpots?</div>
+        <div class="note">
+          <b>SaveSpots.org</b> is a harm-reduction initiative that places <b>boxes of naloxone + fentanyl test strips inside everyday Chicago businesses</b> — barbershops, liquor stores, gas stations, libraries — concentrated in neighborhoods with the highest opioid-overdose burden.<br><br>
+          This map is the <b>data backbone</b> that tells us where the need is greatest and where existing naloxone coverage is thinnest, so every box placement decision is evidence-driven.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">The core problem this solves</div>
+        <div class="note">
+          <b style="color:var(--red)">57.7% of Chicago opioid deaths occur in the victim's home ZIP code</b> — people are using alone, at home, where a fixed public resource can't reach them. The solution is <b>take-home naloxone</b>: place boxes in stores people already visit in their own neighborhood, so the drug travels home with them before the overdose happens.
+          <br><br>
+          Traditional outreach concentrates near encampments and service sites. That misses the much larger population using privately. This map identifies the <b>stores with the highest reach into high-burden areas with no existing naloxone nearby</b>.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">How the data was built</div>
+        <div class="note">
+          <b>Step 1 — Live overdose data.</b> We pull directly from the <b>Cook County Medical Examiner Case Archive</b> (Socrata API, updated daily). This gives us point-level geocoded overdose deaths from 2014 to present — ~10,400 geocoded Chicago cases. Unlike CDPH or CDC dashboards (which lag 1–2 years), this source updates every day.<br><br>
+          <b>Step 2 — Community-area aggregation.</b> Each death is tagged to one of Chicago's 77 community areas via the <code style="font-size:9px">chi_commarea</code> field. We compute death totals by year and area, plus a "recent burden" score using 2023–2025 deaths.<br><br>
+          <b>Step 3 — Naloxone supply mapping.</b> We geocoded the Cook County Health naloxone-box registry (pharmacies, vending machines, community orgs). Note: the existing supply is heavily suburban — Cicero, Maywood, Bellwood. Chicago itself is severely underserved.<br><br>
+          <b>Step 4 — Coverage gap scoring.</b> For each community area: <code style="font-size:9px">gap = recent deaths ÷ (nearby naloxone boxes + 1)</code>. High gap = high deaths, few boxes.<br><br>
+          <b>Step 5 — Candidate storefronts.</b> We pull active Chicago business licenses (liquor stores, gas stations, barbershops, laundromats, pharmacies — businesses with regular neighborhood foot traffic). Each is scored: <code style="font-size:9px">score = recent deaths within 400m × coverage gap × blight/hardship × business-type reach weight × transit bonus</code>. Deduped to one candidate per city block.<br><br>
+          <b>Step 6 — Built environment.</b> We pull live 311 reports of vacant/abandoned buildings and graffiti to build a blight surface. Research shows abandoned-building density predicts overdose risk (Oxford AJE 2024) — this layer reinforces placement decisions without requiring Google Street View.<br><br>
+          <b>Step 7 — CDC context.</b> CDC VSRR provisional data adds a lag-corrected Cook County trend. CDC census-tract Drug OD rates add a finer-grained population-normalized surface beneath the raw death points.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">What each map layer shows</div>
+        <div class="note">
+          <b style="color:var(--red)">Death heatmap</b> — kernel density of overdose death locations. Brighter red = more deaths per square block. Filterable by year with the slider.<br><br>
+          <b style="color:var(--yellow)">Death points</b> — individual geocoded deaths. Click for date, age, cause of death. Useful for block-level targeting.<br><br>
+          <b style="color:var(--blue)">OD rate (census tract)</b> — CDC Drug OD deaths per 100k population, normalized for tract size. Corrects for the fact that dense neighborhoods have more deaths simply because more people live there.<br><br>
+          <b style="color:var(--purple)">Blight hotspots</b> — density of 311-reported vacant/abandoned buildings and graffiti. Correlates with overdose risk and identifies areas where street-level naloxone distribution is also warranted.<br><br>
+          <b style="color:var(--green)">Existing naloxone</b> — known naloxone box locations (Cook County Health registry). Circles = community sites; larger circles = vending machines.<br><br>
+          <b style="color:var(--teal)">Placement candidates</b> — top-scored businesses for a new box. Size = priority score. Click any candidate for the full scoring breakdown.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Caveats</div>
+        <div class="note">
+          <b style="color:var(--orange)">Reporting lag:</b> the most recent 3–6 months undercount because toxicology reports take time. Year totals for 2025–2026 are incomplete. The trend in the spark chart greys these out.<br><br>
+          <b>Geography:</b> all counts are where the death <i>occurred</i>, not where the person lived. This is the right denominator for box placement — but different from the residence-based numbers CDPH publishes.<br><br>
+          <b>Naloxone registry:</b> the Cook County registry is self-reported and may be incomplete. Some sites may have moved or closed. Field verification is needed before outreach.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Built with</div>
+        <div class="note">
+          Python (pandas, geopandas, shapely, requests) · Leaflet.js · Leaflet.heat ·
+          Cook County Socrata API · Chicago Data Portal · CDC WONDER / VSRR · ACS hardship index ·
+          OpenStreetMap / CARTO dark tiles
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="legend">
