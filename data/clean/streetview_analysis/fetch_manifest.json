@@ -1,0 +1,272 @@
+[
+  {
+    "site_id": "site00",
+    "images": [
+      "site00_h0.jpg",
+      "site00_h90.jpg",
+      "site00_h180.jpg",
+      "site00_h270.jpg"
+    ],
+    "name": "MARY'S SNACK SHOP",
+    "address": "606 S PULASKI RD 1ST",
+    "type": "Corner store / food mart",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 57.8,
+    "recent_deaths_400m": 36,
+    "nearest_nax_km": 0.64,
+    "lat": 41.8732690057,
+    "lon": -87.7255550036
+  },
+  {
+    "site_id": "site01",
+    "images": [
+      "site01_h0.jpg",
+      "site01_h90.jpg",
+      "site01_h180.jpg",
+      "site01_h270.jpg"
+    ],
+    "name": "PARADISE SUPERMARKET INC",
+    "address": "8101 S COTTAGE GROVE AVE",
+    "type": "Tobacco / vape",
+    "ca_name": "CHATHAM",
+    "placement_score": 53.4,
+    "recent_deaths_400m": 38,
+    "nearest_nax_km": 0.85,
+    "lat": 41.7475384484,
+    "lon": -87.6049857308
+  },
+  {
+    "site_id": "site02",
+    "images": [
+      "site02_h0.jpg",
+      "site02_h90.jpg",
+      "site02_h180.jpg",
+      "site02_h270.jpg"
+    ],
+    "name": "SAVE A LOT",
+    "address": "414-424 S PULASKI RD",
+    "type": "Corner store / food mart",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 52.3,
+    "recent_deaths_400m": 34,
+    "nearest_nax_km": 0.48,
+    "lat": 41.8747401644,
+    "lon": -87.7256071102
+  },
+  {
+    "site_id": "site03",
+    "images": [
+      "site03_h0.jpg",
+      "site03_h90.jpg",
+      "site03_h180.jpg",
+      "site03_h270.jpg"
+    ],
+    "name": "PJ'S BARBER AND BEAUTY SALON",
+    "address": "739-741 S PULASKI RD GROUND",
+    "type": "Barbershop / salon",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 51.4,
+    "recent_deaths_400m": 32,
+    "nearest_nax_km": 0.84,
+    "lat": 41.8714701641,
+    "lon": -87.7252193537
+  },
+  {
+    "site_id": "site04",
+    "images": [
+      "site04_h0.jpg",
+      "site04_h90.jpg",
+      "site04_h180.jpg",
+      "site04_h270.jpg"
+    ],
+    "name": "FAMILY FOOD MART, INC",
+    "address": "8000 S COTTAGE GROVE AVE",
+    "type": "Tobacco / vape",
+    "ca_name": "CHATHAM",
+    "placement_score": 49.2,
+    "recent_deaths_400m": 35,
+    "nearest_nax_km": 0.75,
+    "lat": 41.749362768,
+    "lon": -87.605332981
+  },
+  {
+    "site_id": "site05",
+    "images": [
+      "site05_h0.jpg",
+      "site05_h90.jpg",
+      "site05_h180.jpg",
+      "site05_h270.jpg"
+    ],
+    "name": "CRAZY PHILLY EXPRESS LLC",
+    "address": "3903-3905 W HARRISON ST 1",
+    "type": "Corner store / food mart",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 46.5,
+    "recent_deaths_400m": 29,
+    "nearest_nax_km": 0.66,
+    "lat": 41.8733504112,
+    "lon": -87.7231014349
+  },
+  {
+    "site_id": "site06",
+    "images": [
+      "site06_h0.jpg",
+      "site06_h90.jpg",
+      "site06_h180.jpg",
+      "site06_h270.jpg"
+    ],
+    "name": "AMY - DONA",
+    "address": "7907 1/2 S COTTAGE GROVE AVE",
+    "type": "Barbershop / salon",
+    "ca_name": "CHATHAM",
+    "placement_score": 45.0,
+    "recent_deaths_400m": 32,
+    "nearest_nax_km": 0.74,
+    "lat": 41.7510302175,
+    "lon": -87.605086981
+  },
+  {
+    "site_id": "site07",
+    "images": [
+      "site07_h0.jpg",
+      "site07_h90.jpg",
+      "site07_h180.jpg",
+      "site07_h270.jpg"
+    ],
+    "name": "COTTAGE BARBER AND HAIR SALON",
+    "address": "8152 S COTTAGE GROVE AVE",
+    "type": "Barbershop / salon",
+    "ca_name": "CHATHAM",
+    "placement_score": 43.6,
+    "recent_deaths_400m": 31,
+    "nearest_nax_km": 0.92,
+    "lat": 41.7460575627,
+    "lon": -87.6052384431
+  },
+  {
+    "site_id": "site08",
+    "images": [
+      "site08_h0.jpg",
+      "site08_h90.jpg",
+      "site08_h180.jpg",
+      "site08_h270.jpg"
+    ],
+    "name": "DEBBIES SOUL FOOD",
+    "address": "5658 W MADISON ST",
+    "type": "Corner store / food mart",
+    "ca_name": "AUSTIN",
+    "placement_score": 43.4,
+    "recent_deaths_400m": 23,
+    "nearest_nax_km": 0.99,
+    "lat": 41.8803204069,
+    "lon": -87.7671496238
+  },
+  {
+    "site_id": "site09",
+    "images": [
+      "site09_h0.jpg",
+      "site09_h90.jpg",
+      "site09_h180.jpg",
+      "site09_h270.jpg"
+    ],
+    "name": "Daily food and Liquor",
+    "address": "3958 W ARTHINGTON ST LL & 1",
+    "type": "Tobacco / vape",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 43.3,
+    "recent_deaths_400m": 27,
+    "nearest_nax_km": 1.02,
+    "lat": 41.869917909,
+    "lon": -87.7251909197
+  },
+  {
+    "site_id": "site10",
+    "images": [
+      "site10_h0.jpg",
+      "site10_h90.jpg",
+      "site10_h180.jpg",
+      "site10_h270.jpg"
+    ],
+    "name": "MC GEE ENTERPRISES INC",
+    "address": "5719 W MADISON ST  1",
+    "type": "Corner store / food mart",
+    "ca_name": "AUSTIN",
+    "placement_score": 39.6,
+    "recent_deaths_400m": 21,
+    "nearest_nax_km": 1.03,
+    "lat": 41.8800703704,
+    "lon": -87.7689368121
+  },
+  {
+    "site_id": "site11",
+    "images": [
+      "site11_h0.jpg",
+      "site11_h90.jpg",
+      "site11_h180.jpg",
+      "site11_h270.jpg"
+    ],
+    "name": "CICERO FOOD CENTER",
+    "address": "519 S CICERO AVE",
+    "type": "Corner store / food mart",
+    "ca_name": "AUSTIN",
+    "placement_score": 39.6,
+    "recent_deaths_400m": 21,
+    "nearest_nax_km": 1.27,
+    "lat": 41.8734058647,
+    "lon": -87.7448616908
+  },
+  {
+    "site_id": "site12",
+    "images": [
+      "site12_h0.jpg",
+      "site12_h90.jpg",
+      "site12_h180.jpg",
+      "site12_h270.jpg"
+    ],
+    "name": "SPORTS TALK BARBER SHOP",
+    "address": "851 E 79TH ST 1ST",
+    "type": "Barbershop / salon",
+    "ca_name": "CHATHAM",
+    "placement_score": 37.9,
+    "recent_deaths_400m": 27,
+    "nearest_nax_km": 0.9,
+    "lat": 41.7512004783,
+    "lon": -87.603150265
+  },
+  {
+    "site_id": "site13",
+    "images": [
+      "site13_h0.jpg",
+      "site13_h90.jpg",
+      "site13_h180.jpg",
+      "site13_h270.jpg"
+    ],
+    "name": "VAN-LOV, INC.",
+    "address": "4058 W VAN BUREN ST 1ST",
+    "type": "Tobacco / vape",
+    "ca_name": "WEST GARFIELD PARK",
+    "placement_score": 37.8,
+    "recent_deaths_400m": 26,
+    "nearest_nax_km": 0.45,
+    "lat": 41.8753484245,
+    "lon": -87.7278159769
+  },
+  {
+    "site_id": "site14",
+    "images": [
+      "site14_h0.jpg",
+      "site14_h90.jpg",
+      "site14_h180.jpg",
+      "site14_h270.jpg"
+    ],
+    "name": "JEFFERY SUB",
+    "address": "2020 E 71ST ST 1 1",
+    "type": "Corner store / food mart",
+    "ca_name": "SOUTH SHORE",
+    "placement_score": 37.1,
+    "recent_deaths_400m": 23,
+    "nearest_nax_km": 1.06,
+    "lat": 41.766359356,
+    "lon": -87.5753988787
+  }
+]

@@ -1,0 +1,145 @@
+{
+  "yearly": {
+    "xylazine": {
+      "2018": 1,
+      "2019": 23,
+      "2020": 31,
+      "2021": 96,
+      "2022": 114,
+      "2023": 136,
+      "2024": 114,
+      "2025": 37,
+      "2026": 11
+    },
+    "nitazene": {
+      "2019": 4,
+      "2020": 21,
+      "2021": 35,
+      "2022": 23,
+      "2023": 14,
+      "2024": 30,
+      "2025": 39,
+      "2026": 8
+    },
+    "carfentanil": {
+      "2016": 3,
+      "2017": 3,
+      "2018": 18,
+      "2019": 3,
+      "2021": 1,
+      "2023": 15,
+      "2024": 5,
+      "2025": 48,
+      "2026": 11
+    },
+    "fentanyl": {
+      "2014": 6,
+      "2015": 65,
+      "2016": 381,
+      "2017": 440,
+      "2018": 591,
+      "2019": 660,
+      "2020": 1070,
+      "2021": 1242,
+      "2022": 1254,
+      "2023": 1232,
+      "2024": 739,
+      "2025": 491,
+      "2026": 145
+    },
+    "heroin": {
+      "2014": 86,
+      "2015": 260,
+      "2016": 390,
+      "2017": 515,
+      "2018": 461,
+      "2019": 455,
+      "2020": 552,
+      "2021": 450,
+      "2022": 287,
+      "2023": 244,
+      "2024": 183,
+      "2025": 152,
+      "2026": 37
+    },
+    "cocaine": {
+      "2014": 23,
+      "2015": 94,
+      "2016": 206,
+      "2017": 261,
+      "2018": 269,
+      "2019": 331,
+      "2020": 464,
+      "2021": 571,
+      "2022": 629,
+      "2023": 669,
+      "2024": 401,
+      "2025": 268,
+      "2026": 78
+    }
+  },
+  "xylazine_top_areas_2022_2024": [
+    {
+      "community_area": "AUSTIN",
+      "deaths": 45
+    },
+    {
+      "community_area": "ENGLEWOOD",
+      "deaths": 20
+    },
+    {
+      "community_area": "HUMBOLDT PARK",
+      "deaths": 20
+    },
+    {
+      "community_area": "NORTH LAWNDALE",
+      "deaths": 19
+    },
+    {
+      "community_area": "WEST GARFIELD PARK",
+      "deaths": 16
+    },
+    {
+      "community_area": "EAST GARFIELD PARK",
+      "deaths": 14
+    },
+    {
+      "community_area": "AUBURN GRESHAM",
+      "deaths": 13
+    },
+    {
+      "community_area": "WEST ENGLEWOOD",
+      "deaths": 13
+    },
+    {
+      "community_area": "NEW CITY",
+      "deaths": 12
+    },
+    {
+      "community_area": "WOODLAWN",
+      "deaths": 11
+    },
+    {
+      "community_area": "NEAR WEST SIDE",
+      "deaths": 11
+    },
+    {
+      "community_area": "SOUTH SHORE",
+      "deaths": 10
+    },
+    {
+      "community_area": "CHICAGO LAWN",
+      "deaths": 8
+    },
+    {
+      "community_area": "ROSELAND",
+      "deaths": 8
+    },
+    {
+      "community_area": "CHATHAM",
+      "deaths": 8
+    }
+  ],
+  "box_contents_recommendation": "Xylazine ('tranq') is an adulterant in the fentanyl supply and is NOT reversed by naloxone. Given its rise, SaveSpots boxes should include xylazine test strips and wound-care info alongside naloxone + fentanyl test strips, with signage: 'still give naloxone, still call 911 \u2014 they may not fully wake.'",
+  "note": "Recent years (2025-26) undercount due to ME toxicology reporting lag."
+}

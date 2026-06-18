@@ -1,0 +1,132 @@
+{
+  "county": "Cook County, IL",
+  "metric": "Provisional drug-overdose deaths, 12-month-ending (all drugs, CDC VSRR)",
+  "series_desc_recent_first": [
+    {
+      "month_ending": "2025-09-30",
+      "count_12mo": 988,
+      "pct_pending": 25.3
+    },
+    {
+      "month_ending": "2025-08-31",
+      "count_12mo": 1026,
+      "pct_pending": 23.1
+    },
+    {
+      "month_ending": "2025-07-31",
+      "count_12mo": 1064,
+      "pct_pending": 23.9
+    },
+    {
+      "month_ending": "2025-06-30",
+      "count_12mo": 1118,
+      "pct_pending": 23.4
+    },
+    {
+      "month_ending": "2025-05-31",
+      "count_12mo": 1135,
+      "pct_pending": 22.2
+    },
+    {
+      "month_ending": "2025-04-30",
+      "count_12mo": 1179,
+      "pct_pending": 22.6
+    },
+    {
+      "month_ending": "2025-03-31",
+      "count_12mo": 1246,
+      "pct_pending": 22.5
+    },
+    {
+      "month_ending": "2025-02-28",
+      "count_12mo": 1277,
+      "pct_pending": 21.3
+    },
+    {
+      "month_ending": "2025-01-31",
+      "count_12mo": 1306,
+      "pct_pending": 22.6
+    },
+    {
+      "month_ending": "2024-12-31",
+      "count_12mo": 1332,
+      "pct_pending": 21.5
+    },
+    {
+      "month_ending": "2024-11-30",
+      "count_12mo": 1394,
+      "pct_pending": 22.3
+    },
+    {
+      "month_ending": "2024-10-31",
+      "count_12mo": 1457,
+      "pct_pending": 22.4
+    },
+    {
+      "month_ending": "2024-09-30",
+      "count_12mo": 1529,
+      "pct_pending": 22.6
+    },
+    {
+      "month_ending": "2024-08-31",
+      "count_12mo": 1560,
+      "pct_pending": 22.3
+    },
+    {
+      "month_ending": "2024-07-31",
+      "count_12mo": 1615,
+      "pct_pending": 21.7
+    },
+    {
+      "month_ending": "2024-06-30",
+      "count_12mo": 1620,
+      "pct_pending": 22.6
+    },
+    {
+      "month_ending": "2024-05-31",
+      "count_12mo": 1673,
+      "pct_pending": 24.5
+    },
+    {
+      "month_ending": "2024-04-30",
+      "count_12mo": 1717,
+      "pct_pending": 24.6
+    },
+    {
+      "month_ending": "2024-03-31",
+      "count_12mo": 1760,
+      "pct_pending": 24.1
+    },
+    {
+      "month_ending": "2024-02-29",
+      "count_12mo": 1823,
+      "pct_pending": 24.5
+    },
+    {
+      "month_ending": "2024-01-31",
+      "count_12mo": 1869,
+      "pct_pending": 23.1
+    },
+    {
+      "month_ending": "2023-12-31",
+      "count_12mo": 1911,
+      "pct_pending": 22.9
+    },
+    {
+      "month_ending": "2023-11-30",
+      "count_12mo": 1981,
+      "pct_pending": 21.5
+    },
+    {
+      "month_ending": "2023-10-31",
+      "count_12mo": 2050,
+      "pct_pending": 21.5
+    }
+  ],
+  "latest": {
+    "month_ending": "2025-09-30",
+    "count_12mo": 988,
+    "pct_pending": 25.3
+  },
+  "lag_note": "Most recent 12-mo-ending value (2025-09-30) has 25.3% of records still pending \u2014 i.e. it is an UNDERCOUNT that will rise. Treat recent months as a floor, not a final number."
+}

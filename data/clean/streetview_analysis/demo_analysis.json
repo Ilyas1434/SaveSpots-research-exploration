@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Austin (W Chicago Ave)",
+    "lat": 41.8989,
+    "lon": -87.7636,
+    "overall_risk_score": 82,
+    "vacant_lots": 7,
+    "abandoned_buildings": 8,
+    "liquor_stores": 6,
+    "physical_disorder": 7,
+    "alley_presence": 9,
+    "social_isolation": 6,
+    "poor_lighting": 5,
+    "transient_indicators": 4,
+    "landscaping_protection": 2,
+    "active_storefronts_protection": 2,
+    "key_observations": [
+      "Multiple alleyways visible",
+      "Abandoned storefront with boarded windows",
+      "No maintained green space",
+      "Graffiti on building facades"
+    ],
+    "recommended_naloxone_placement": true,
+    "placement_rationale": "High vacant/disorder score + 266 recent deaths + only 2 naloxone locations within 1.5km"
+  },
+  {
+    "label": "West Garfield Park (Madison St)",
+    "lat": 41.881,
+    "lon": -87.738,
+    "overall_risk_score": 79,
+    "vacant_lots": 8,
+    "abandoned_buildings": 7,
+    "liquor_stores": 5,
+    "physical_disorder": 8,
+    "alley_presence": 9,
+    "social_isolation": 7,
+    "poor_lighting": 6,
+    "transient_indicators": 3,
+    "landscaping_protection": 1,
+    "active_storefronts_protection": 3,
+    "key_observations": [
+      "Significant vacant lot coverage",
+      "Deteriorated housing stock",
+      "Alley network visible",
+      "Minimal retail activity"
+    ],
+    "recommended_naloxone_placement": true,
+    "placement_rationale": "Highest death density on West Side + severe gap in naloxone coverage"
+  },
+  {
+    "label": "Humboldt Park (Division St)",
+    "lat": 41.899,
+    "lon": -87.722,
+    "overall_risk_score": 71,
+    "vacant_lots": 6,
+    "abandoned_buildings": 5,
+    "liquor_stores": 7,
+    "physical_disorder": 6,
+    "alley_presence": 8,
+    "social_isolation": 4,
+    "poor_lighting": 4,
+    "transient_indicators": 5,
+    "landscaping_protection": 4,
+    "active_storefronts_protection": 5,
+    "key_observations": [
+      "Multiple liquor stores on corridor",
+      "Some active commercial activity",
+      "Alley access behind buildings",
+      "Park provides some green space"
+    ],
+    "recommended_naloxone_placement": true,
+    "placement_rationale": "High liquor density + 124 recent deaths + limited naloxone access on north corridor"
+  }
+]

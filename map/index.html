@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SaveSpots — Chicago Naloxone Placement Intelligence</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+:root{
+  --bg:#06080d;--panel:#0d1420;--panel2:#111927;--border:#1b2940;--border2:#26395a;
+  --ink:#e6edf6;--muted:#7990ad;--faint:#2a3d55;
+  --red:#ff3d2e;--green:#22c55e;--blue:#3b82f6;--yellow:#f59e0b;
+  --purple:#a855f7;--orange:#f97316;--teal:#14b8a6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;color:var(--ink)}
+#map{position:absolute;inset:0}
+a{color:var(--blue);text-decoration:none}
+
+/* sidebar */
+#sidebar{position:absolute;z-index:1000;top:0;left:0;bottom:0;width:356px;display:flex;flex-direction:column;
+  background:rgba(6,8,13,.96);backdrop-filter:blur(20px);border-right:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;padding:13px 15px 11px}
+.brand-dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
+.brand-name{font-size:14px;font-weight:800;letter-spacing:.2px}
+.brand-tag{font-size:10px;color:var(--muted)}
+#freshness{margin-left:auto;text-align:right;font-size:9px;color:var(--muted);line-height:1.4}
+#freshness b{color:var(--green)}
+
+#tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.tab{flex:1;padding:11px 3px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:.15s}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink);border-color:var(--red)}
+
+#inner{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:11px;
+  scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+#inner::-webkit-scrollbar{width:5px}
+#inner::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.pane{display:none;flex-direction:column;gap:11px}
+.pane.on{display:flex}
+
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:11px;padding:13px}
+.card-title{font-size:9.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.note{font-size:10px;color:var(--muted);line-height:1.55}
+.note b{color:var(--ink)}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.stat{background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:9px;padding:10px 11px}
+.stat .v{font-size:21px;font-weight:800;line-height:1}
+.stat .k{font-size:9.5px;color:var(--muted);margin-top:4px;line-height:1.3}
+
+.yr-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.yr-val{font-size:20px;font-weight:800}
+input[type=range]{width:100%;appearance:none;height:3px;background:var(--faint);border-radius:2px;outline:none;margin:9px 0 3px}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;border-radius:50%;background:var(--red);cursor:pointer;box-shadow:0 0 8px rgba(255,61,46,.5)}
+.yr-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+.spark{display:flex;align-items:flex-end;gap:2px;height:46px;margin-top:9px}
+.bar{flex:1;border-radius:2px 2px 0 0;cursor:pointer;min-width:0;transition:opacity .15s}
+.bar:hover{opacity:.8!important}
+
+.layer-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lyr{padding:9px 8px;border:1px solid var(--border);border-radius:9px;cursor:pointer;font-size:10.5px;
+  color:var(--muted);text-align:center;background:rgba(0,0,0,.2);transition:.15s}
+.lyr.on{color:#fff;border-color:var(--lc);background:rgba(255,255,255,.04)}
+.lyr.on .dot{background:var(--lc)}
+.lyr .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--faint);margin-right:5px;vertical-align:middle}
+
+.row{display:grid;grid-template-columns:20px 1fr auto;gap:7px;align-items:center;padding:8px 0;border-top:1px solid var(--border)}
+.row:first-child{border-top:none}
+.rank{font-size:9px;font-weight:700;color:var(--muted);text-align:right}
+.rname{font-size:12px;font-weight:600;line-height:1.2}
+.rsub{font-size:9.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.bar-wrap{grid-column:1/-1;margin-top:3px}
+.minibar{height:3px;border-radius:2px}
+.badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;min-width:40px;text-align:center}
+.chip{display:inline-block;font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:5px;vertical-align:middle}
+.chip-t{background:rgba(20,184,166,.18);color:var(--teal)}
+
+.kv{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}
+.kv span:first-child{color:var(--muted)}
+.big-num{font-size:30px;font-weight:800;line-height:1}
+.warn{border-color:var(--orange);background:rgba(249,115,22,.08)}
+.good{border-color:var(--green);background:rgba(34,197,94,.08)}
+.sources li{font-size:10px;color:var(--muted);line-height:1.7;list-style:none}
+.sources li b{color:var(--ink)}
+.tag{display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;margin-right:5px}
+.t-live{background:rgba(34,197,94,.2);color:var(--green)}
+.t-month{background:rgba(59,130,246,.2);color:var(--blue)}
+.t-static{background:rgba(121,144,173,.2);color:var(--muted)}
+
+/* legend */
+.legend{display:flex;align-items:center;gap:9px;padding:8px 13px;background:rgba(0,0,0,.5);
+  border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--muted)}
+.leg .d{width:8px;height:8px;border-radius:50%}
+.hmgrad{width:46px;height:6px;border-radius:3px;background:linear-gradient(90deg,#1d3a8f,#3b82f6,#22c55e,#f59e0b,#ff3d2e)}
+
+/* popups */
+.leaflet-popup-content-wrapper{background:#0d1420;color:var(--ink);border:1px solid var(--border2);border-radius:10px}
+.leaflet-popup-tip{background:#0d1420}
+.pu-title{font-weight:700;font-size:13px;margin-bottom:5px}
+.pu-r{font-size:11px;color:var(--muted);margin-top:3px}
+.pu-r b{color:var(--ink)}
+.pu-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-bottom:6px}
+.meter{height:6px;border-radius:3px;background:var(--faint);margin-top:6px;overflow:hidden}
+.meter>div{height:100%;border-radius:3px}
+
+#loading{position:absolute;inset:0;z-index:5000;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px}
+.sp{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="loading"><div class="sp"></div><div class="ld" id="ld">Loading live data…</div></div>
+<div id="map"></div>
+
+<div id="sidebar">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <div><div class="brand-name">SaveSpots</div><div class="brand-tag">Chicago Naloxone Placement Intelligence</div></div>
+    <div id="freshness">—</div>
+  </div>
+  <div id="tabs">
+    <div class="tab on" data-t="overview" onclick="tab('overview')">Overview</div>
+    <div class="tab" data-t="placement" onclick="tab('placement')">Placement</div>
+    <div class="tab" data-t="environment" onclick="tab('environment')">Environment</div>
+    <div class="tab" data-t="insights" onclick="tab('insights')">Insights</div>
+  </div>
+
+  <div id="inner">
+    <!-- OVERVIEW -->
+    <div id="pane-overview" class="pane on">
+      <div class="stats">
+        <div class="stat"><div class="v" style="color:var(--red)" id="s-deaths">—</div><div class="k">Opioid deaths mapped (in Chicago)</div></div>
+        <div class="stat"><div class="v" style="color:var(--yellow)" id="s-year">—</div><div class="k">Deaths in selected year</div></div>
+        <div class="stat"><div class="v" style="color:var(--green)" id="s-nax">—</div><div class="k">Existing naloxone locations</div></div>
+        <div class="stat"><div class="v" style="color:var(--teal)" id="s-cand">—</div><div class="k">Candidate storefronts ranked</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Deaths by year <span style="color:var(--orange)">· grey = incomplete (reporting lag)</span></div>
+        <div class="yr-header"><span class="note">Map shows</span><span class="yr-val" id="yr">ALL</span></div>
+        <input type="range" id="slider" min="0" max="13" value="0"/>
+        <div class="yr-labels"><span>ALL</span><span>'14</span><span>'18</span><span>'22</span><span>'26</span></div>
+        <div class="spark" id="spark"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Map layers</div>
+        <div class="layer-grid" id="layers"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Definition &amp; caveats</div>
+        <div class="note">Counts = opioid overdoses that <b>physically occurred in Chicago</b> (Cook County Medical Examiner, geocoded). This is the right denominator for <b>where to place boxes</b> — distinct from residence-based figures CDPH/CDC publish. Recent months undercount (toxicology lag); see Insights.</div>
+      </div>
+    </div>
+
+    <!-- PLACEMENT -->
+    <div id="pane-placement" class="pane">
+      <div class="card">
+        <div class="card-title">Recommended storefronts — reach × need</div>
+        <div class="note" style="margin-bottom:10px">Active Chicago businesses in the worst coverage-gap areas, ranked for <b>take-home distribution</b>: local overdose density × coverage gap × area blight/hardship, weighted by foot-traffic reach (business type + transit). Deduped to one per block. Toggle <span style="color:var(--teal)">◎ Candidates</span>. Full list → <code style="font-size:9px">placement_candidates.csv</code></div>
+        <div id="cand-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Coverage gap by community area</div>
+        <div class="note" style="margin-bottom:9px">Recent deaths ÷ nearby naloxone. Higher = more urgent.</div>
+        <div id="gap-list"></div>
+      </div>
+    </div>
+
+    <!-- ENVIRONMENT -->
+    <div id="pane-environment" class="pane">
+      <div class="card">
+        <div class="card-title">Built-environment blight hotspots</div>
+        <div class="note" style="margin-bottom:9px">Live from city data — <b>311 vacant/abandoned buildings</b> + graffiti (no Street View needed). Vacant/abandoned blocks predict overdose risk (Oxford AJE 2024). Toggle <span style="color:var(--purple)">⬢ Blight</span>.</div>
+        <div id="blight-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Overdose-rate surface (CDC, census tract)</div>
+        <div class="note">CDC tract-level Drug_OD <b>rates per 100k</b> — finer than community areas, normalizes for population. Toggle <span style="color:var(--blue)">▦ OD rate</span>. <span id="tract-meta"></span></div>
+      </div>
+      <div class="card" id="gsv-card">
+        <div class="card-title">Street View AI check (optional)</div>
+        <div id="gsv-status"></div>
+        <div id="gsv-cards"></div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div id="pane-insights" class="pane">
+      <div class="card good" id="reach-card">
+        <div class="card-title" style="color:var(--green)">Why take-home works (reachability)</div>
+        <div id="reach-body" class="note"></div>
+      </div>
+      <div class="card warn">
+        <div class="card-title" style="color:var(--orange)">Box contents — xylazine alert</div>
+        <div id="supply-body" class="note"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Reporting-lag correction (CDC VSRR)</div>
+        <div id="lag-body" class="note"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">When overdoses happen (timing)</div>
+        <div class="note" style="margin-bottom:8px" id="temporal-note"></div>
+        <div class="spark" id="hour-spark"></div>
+        <div class="yr-labels"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>11p</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Data sources &amp; freshness</div>
+        <ul class="sources" id="sources"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="hmgrad"></div>Death density</div>
+    <div class="leg"><div class="d" style="background:var(--green)"></div>Naloxone</div>
+    <div class="leg"><div class="d" style="background:var(--teal)"></div>Candidate</div>
+    <div class="leg"><div class="d" style="background:var(--purple)"></div>Blight</div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const YEARS=['ALL','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+const INCOMPLETE=['2025','2026'];           // lag-aware: grey these in the trend
+let D={};                                    // loaded datasets
+let yearDeaths={}, maxYD=1, curYear='ALL';
+let L_={};                                   // leaflet layers
+const on={heat:true,pts:false,rate:false,blight:true,nax:true,cand:true};
+
+const map=L.map('map',{zoomControl:false,preferCanvas:true}).setView([41.83,-87.68],11);
+L.control.zoom({position:'topright'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  {attribution:'© OpenStreetMap © CARTO',maxZoom:19}).addTo(map);
+
+const LAYERS=[
+  {id:'heat', name:'Death heatmap', c:'var(--red)'},
+  {id:'pts',  name:'Death points',  c:'var(--yellow)'},
+  {id:'rate', name:'OD rate (tract)',c:'var(--blue)'},
+  {id:'blight',name:'Blight',       c:'var(--purple)'},
+  {id:'nax',  name:'Naloxone',      c:'var(--green)'},
+  {id:'cand', name:'Candidates',    c:'var(--teal)'},
+];
+
+// ---------- layer builders ----------
+function buildHeat(){
+  const f=(curYear==='ALL'?D.deaths:D.deaths.filter(x=>x.properties.year===curYear));
+  if(L_.heat)map.removeLayer(L_.heat);
+  L_.heat=L.heatLayer(f.map(x=>[x.geometry.coordinates[1],x.geometry.coordinates[0],0.7]),
+    {radius:17,blur:21,maxZoom:15,gradient:{0.2:'#1d3a8f',0.4:'#3b82f6',0.6:'#22c55e',0.78:'#f59e0b',1:'#ff3d2e'}});
+  if(on.heat)L_.heat.addTo(map);
+}
+function buildPts(){
+  const f=(curYear==='ALL'?D.deaths:D.deaths.filter(x=>x.properties.year===curYear));
+  if(L_.pts)map.removeLayer(L_.pts);
+  L_.pts=L.layerGroup(f.map(x=>L.circleMarker([x.geometry.coordinates[1],x.geometry.coordinates[0]],
+    {radius:3,weight:0,fillColor:'#ff3d2e',fillOpacity:.55}).bindPopup(
+    `<div class="pu-title">${x.properties.community_area||'—'}</div>
+     <div class="pu-r">${x.properties.death_date||''} · age ${x.properties.age||'?'} · ${x.properties.gender||''}</div>
+     <div class="pu-r">${(x.properties.cause||'').slice(0,70)}</div>`)));
+  if(on.pts)L_.pts.addTo(map);
+}
+function rateColor(r){return r>=120?'#ff3d2e':r>=70?'#f97316':r>=40?'#f59e0b':r>=15?'#3b82f6':r>0?'#1d3a8f':'#11192700';}
+function buildRate(){
+  if(L_.rate)map.removeLayer(L_.rate);
+  L_.rate=L.geoJSON(D.tract,{style:f=>{const r=f.properties.od_rate;
+    return{fillColor:rateColor(r||0),fillOpacity:r?.55:0,weight:.4,color:'#26395a'};},
+    onEachFeature:(f,l)=>{const r=f.properties.od_rate;
+      l.bindPopup(`<div class="pu-title">Census tract</div><div class="pu-r">Drug-OD rate: <b>${r!=null?r.toFixed(1)+' / 100k':'n/a'}</b></div>`);}});
+  if(on.rate)L_.rate.addTo(map);
+}
+function buildBlight(){
+  if(L_.blight)map.removeLayer(L_.blight);
+  const g=(D.builtenv.grid||[]);const mx=Math.max(...g.map(c=>c.count),1);
+  L_.blight=L.heatLayer(g.map(c=>[c.lat,c.lon,c.count/mx]),
+    {radius:20,blur:16,minOpacity:.25,gradient:{0.3:'#3b0764',0.6:'#7e22ce',1:'#c084fc'}});
+  if(on.blight)L_.blight.addTo(map);
+}
+function buildNax(){
+  if(L_.nax)map.removeLayer(L_.nax);
+  L_.nax=L.layerGroup(D.nax.map(f=>{const p=f.properties;
+    return L.circleMarker([f.geometry.coordinates[1],f.geometry.coordinates[0]],
+      {radius:p.type==='vending_machine'?7:5,weight:1.5,color:'#06080d',fillColor:'#22c55e',fillOpacity:.9})
+    .bindPopup(`<span class="pu-tag" style="background:rgba(34,197,94,.2);color:var(--green)">${p.type}</span>
+      <div class="pu-title">${p.name}</div><div class="pu-r">${p.address}</div>
+      <div class="pu-r">${p.operator||''}</div>`);}));
+  if(on.nax)L_.nax.addTo(map);
+}
+function buildCand(){
+  if(L_.cand)map.removeLayer(L_.cand);
+  const top=D.cand.slice(0,300);const mx=top[0]?.properties.placement_score||1;
+  L_.cand=L.layerGroup(top.map(f=>{const p=f.properties;
+    return L.circleMarker([f.geometry.coordinates[1],f.geometry.coordinates[0]],
+      {radius:4+(p.placement_score/mx)*7,weight:1,color:'#072a26',fillColor:'#14b8a6',fillOpacity:.85})
+    .bindPopup(`<span class="pu-tag" style="background:rgba(20,184,166,.2);color:var(--teal)">Candidate · ${p.type}</span>
+      <div class="pu-title">${p.name}</div><div class="pu-r">${p.address}, ${p.ca_name}</div>
+      <div class="meter"><div style="width:${(p.placement_score/mx)*100}%;background:var(--teal)"></div></div>
+      <div class="pu-r" style="margin-top:6px">Priority <b>${p.placement_score}</b> · deaths&lt;400m <b>${p.recent_deaths_400m}</b> · nearest nax <b>${p.nearest_nax_km}km</b></div>
+      <div class="pu-r">blight ${p.blight_score} · hardship ${p.hardship} · ${p.transit_adjacent?'transit-adjacent':'not near transit'}</div>`);}));
+  if(on.cand)L_.cand.addTo(map);
+}
+function toggle(id){on[id]=!on[id];document.querySelector(`.lyr[data-l="${id}"]`).classList.toggle('on',on[id]);
+  const l=L_[id];if(!l)return;on[id]?l.addTo(map):map.removeLayer(l);}
+
+// ---------- panels ----------
+function buildLayerGrid(){
+  $('layers').innerHTML=LAYERS.map(l=>
+    `<div class="lyr ${on[l.id]?'on':''}" data-l="${l.id}" style="--lc:${l.c}" onclick="toggle('${l.id}')"><span class="dot"></span>${l.name}</div>`).join('');
+}
+function buildSpark(){
+  const max=maxYD;
+  $('spark').innerHTML=YEARS.slice(1).map((y,i)=>{
+    const inc=INCOMPLETE.includes(y);
+    return `<div class="bar" title="${y}: ${yearDeaths[y]||0}${inc?' (incomplete)':''}" onclick="setYear(${i+1})"
+      style="height:${((yearDeaths[y]||0)/max)*100}%;opacity:.5;background:${inc?'#5d7a9a':(y>='2020'?'#ff3d2e':'#3b82f6')}"></div>`;}).join('');
+}
+function setYear(i){
+  curYear=YEARS[i];$('yr').textContent=curYear;$('slider').value=i;
+  $('s-year').textContent=(yearDeaths[curYear]||(curYear==='ALL'?D.deaths.length:0)).toLocaleString();
+  [...$('spark').children].forEach((b,j)=>b.style.opacity=(i===0?.5:(j===i-1?1:.3)));
+  buildHeat();buildPts();
+}
+function miniBar(w,grad){return `<div class="bar-wrap"><div class="minibar" style="width:${w}%;background:${grad}"></div></div>`;}
+
+function buildCandList(){
+  const top=D.cand.slice(0,12);const mx=top[0]?.properties.placement_score||1;
+  $('cand-list').innerHTML=top.map((f,i)=>{const p=f.properties;
+    return `<div class="row"><div class="rank">${i+1}</div>
+      <div><div class="rname">${p.name}${p.transit_adjacent?'<span class="chip chip-t">transit</span>':''}</div>
+        <div class="rsub">${p.type} · ${p.ca_name} · ${p.recent_deaths_400m} deaths&lt;400m · nax ${p.nearest_nax_km}km · blight ${p.blight_score}</div>
+        ${miniBar((p.placement_score/mx)*100,'linear-gradient(90deg,var(--yellow),var(--teal))')}</div>
+      <div class="badge" style="background:rgba(20,184,166,.15);color:var(--teal)">${p.placement_score}</div></div>`;}).join('');
+}
+function buildGapList(){
+  const rows=Object.entries(D.gap||{}).map(([ca,v])=>({ca,...v}))
+    .filter(r=>typeof r.gap_score==='number').sort((a,b)=>b.gap_score-a.gap_score).slice(0,10);
+  const mx=rows[0]?.gap_score||1;
+  $('gap-list').innerHTML=rows.map((r,i)=>
+    `<div class="row"><div class="rank">${i+1}</div>
+      <div><div class="rname">${r.ca}</div><div class="rsub">${r.recent} deaths '23–25 · ${r.nax_nearby} boxes nearby</div>
+        ${miniBar((r.gap_score/mx)*100,'linear-gradient(90deg,var(--yellow),var(--red))')}</div>
+      <div class="badge" style="background:rgba(255,61,46,.15);color:var(--red)">${r.gap_score}</div></div>`).join('');
+}
+function buildBlightList(){
+  const rows=Object.entries(D.builtenv.by_ca||{}).map(([ca,v])=>({ca,...v}))
+    .sort((a,b)=>b.blight_score-a.blight_score).slice(0,10);
+  const mx=rows[0]?.blight_score||1;
+  $('blight-list').innerHTML=rows.map((r,i)=>
+    `<div class="row"><div class="rank">${i+1}</div>
+      <div><div class="rname">${r.ca}</div><div class="rsub">${r.abandoned_buildings.toLocaleString()} abandoned-bldg reports</div>
+        ${miniBar((r.blight_score/mx)*100,'linear-gradient(90deg,#7e22ce,#c084fc)')}</div>
+      <div class="badge" style="background:rgba(168,85,247,.15);color:var(--purple)">${r.blight_score}</div></div>`).join('');
+}
+function buildInsights(){
+  // reachability
+  const rc=D.reach||{};
+  $('reach-body').innerHTML=`<div class="big-num" style="color:var(--green)">${rc.pct_home_zip||'—'}%</div>
+    <div style="margin-top:6px">of Chicago opioid deaths occur in the victim's <b>home ZIP code</b> — using at/near home, often alone. A fixed box can't reach that; <b>take-home</b> naloxone can, because it travels with whoever picked it up. ${rc.caveat||''}</div>`;
+  // supply / xylazine
+  const sup=D.supply||{};const xy=sup.yearly?.xylazine||{};
+  const yrs=Object.keys(xy).sort();const last=yrs.filter(y=>!INCOMPLETE.includes(y)).slice(-1)[0];
+  $('supply-body').innerHTML=`Xylazine ("tranq") in Chicago opioid deaths: <b>${xy['2018']||0}</b> (2018) → <b>${xy[last]||0}</b> (${last}). It's an adulterant in the fentanyl supply that <b>naloxone does not reverse</b>.<br><br>${sup.box_contents_recommendation||''}`;
+  // lag
+  const v=D.vsrr||{};const lt=v.latest||{};
+  $('lag-body').innerHTML=`Cook County 12-mo-ending provisional overdose deaths: <b>${lt.count_12mo||'—'}</b> (to ${lt.month_ending||'—'}), but <b style="color:var(--orange)">${lt.pct_pending||'—'}% of records still pending</b>. ${v.lag_note||''}`;
+  // temporal
+  const t=D.temporal||{};const byh=t.by_hour||{};
+  const hours=[...Array(24).keys()];const mx=Math.max(...hours.map(h=>h===0?0:(byh[h]||0)),1);
+  $('temporal-note').textContent=t.note||'';
+  $('hour-spark').innerHTML=hours.map(h=>{const v=byh[h]||0;const art=h===0;
+    return `<div class="bar" title="${h}:00 — ${v}" style="height:${art?6:(v/mx)*100}%;opacity:${art?.25:.6};background:${h>=10&&h<=16?'#ff3d2e':'#3b82f6'}"></div>`;}).join('');
+  // sources
+  $('sources').innerHTML=[
+    ['t-live','Cook County ME deaths','point-level, daily — cjeq-bs86'],
+    ['t-month','CDC VSRR provisional','Cook County, monthly + % pending'],
+    ['t-static','CDC tract OD rate','census tract, period 2022'],
+    ['t-live','Chicago business licenses','candidate storefronts, daily'],
+    ['t-live','311 vacant/abandoned + graffiti','blight surface, daily'],
+    ['t-live','CTA stops','transit-reach signal'],
+    ['t-static','ACS hardship index','deprivation, by area'],
+    ['t-static','CCH / CDPH naloxone pages','existing supply (verified)'],
+  ].map(([c,n,d])=>`<li><span class="tag ${c}">${c==='t-live'?'LIVE':c==='t-month'?'MONTHLY':'STATIC'}</span><b>${n}</b> — ${d}</li>`).join('');
+}
+function buildGSV(){
+  const sim=D.gsvSimulated;
+  $('gsv-status').innerHTML=sim
+    ?`<div class="note" style="color:var(--orange)">⚠ No live Street View run yet. Optional verification only — Google is not used in the core analysis (blight comes from live city data above).</div>`
+    :`<div class="note" style="color:var(--green)">✓ Claude scored real Street View imagery for ${D.gsv.length} candidate sites.</div>`;
+  if(!sim){$('gsv-cards').innerHTML=D.gsv.slice(0,8).map(d=>
+    `<div class="row"><div class="rank"></div><div><div class="rname">${d.label}</div>
+      <div class="rsub">${(d.key_observations||[]).slice(0,2).join(' · ')}</div></div>
+      <div class="badge" style="background:rgba(168,85,247,.15);color:var(--purple)">${d.overall_risk_score}</div></div>`).join('');}
+  else $('gsv-cards').innerHTML='';
+}
+function tab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===name));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  $('pane-'+name).classList.add('on');
+}
+
+// ---------- load ----------
+async function getJSON(p,fallback){try{const r=await fetch(p);if(!r.ok)throw 0;return await r.json();}catch(e){return fallback;}}
+async function loadAll(){
+  const base='../data/clean/';
+  const [deaths,nax,cand,tract,builtenv,gap,vsrr,supply,temporal,reach,updated]=await Promise.all([
+    getJSON(base+'opioid_deaths_chicago.geojson',{features:[]}),
+    getJSON(base+'naloxone_locations.geojson',{features:[]}),
+    getJSON(base+'placement_candidates.geojson',{features:[]}),
+    getJSON(base+'tract_overdose.geojson',{features:[]}),
+    getJSON(base+'builtenv_index.json',{grid:[],by_ca:{}}),
+    getJSON(base+'coverage_gap.json',{}),
+    getJSON(base+'cdc_vsrr.json',{}),
+    getJSON(base+'supply_composition.json',{}),
+    getJSON(base+'temporal.json',{}),
+    getJSON(base+'reachability.json',{}),
+    getJSON(base+'last_updated.json',null),
+  ]);
+  let gsv=await getJSON(base+'streetview_analysis/batch_gap_analysis.json',null);
+  D={deaths:deaths.features,nax:nax.features,cand:cand.features,tract:tract,
+     builtenv:builtenv,gap:gap,vsrr:vsrr,supply:supply,temporal:temporal,reach:reach,
+     gsv:gsv||[],gsvSimulated:!gsv};
+  // year totals from data (no hardcoding)
+  D.deaths.forEach(f=>{const y=f.properties.year;if(y)yearDeaths[y]=(yearDeaths[y]||0)+1;});
+  maxYD=Math.max(...Object.values(yearDeaths),1);
+  $('s-deaths').textContent=D.deaths.length.toLocaleString();
+  $('s-year').textContent=D.deaths.length.toLocaleString();
+  $('s-nax').textContent=D.nax.length;
+  $('s-cand').textContent=D.cand.length.toLocaleString();
+  $('tract-meta').textContent=tract.metadata?`(${tract.metadata.tracts_with_rate} Chicago tracts, ${tract.metadata.period})`:'';
+  const stamp=updated?.generated||cand.metadata?.generated||tract.metadata?.data_as_of||'today';
+  $('freshness').innerHTML=`updated<br><b>${(''+stamp).slice(0,10)}</b>`;
+
+  buildLayerGrid();buildSpark();
+  buildHeat();buildPts();buildRate();buildBlight();buildNax();buildCand();
+  buildCandList();buildGapList();buildBlightList();buildInsights();buildGSV();
+  $('loading').style.display='none';
+}
+$('slider').addEventListener('input',e=>setYear(+e.target.value));
+loadAll().catch(e=>{$('ld').textContent='Error loading data — run scripts/serve.sh from repo root.';console.error(e);});
+
+// auto-refresh: re-pull data when tab regains focus (constant heatmap)
+let lastFocus=Date.now();
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden && Date.now()-lastFocus>5*60*1000){lastFocus=Date.now();location.reload();}
+});
+</script>
+</body>
+</html>

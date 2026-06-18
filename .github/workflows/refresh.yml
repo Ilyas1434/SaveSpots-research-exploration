@@ -1,0 +1,30 @@
+name: Refresh overdose data (constant heatmap)
+
+# Self-updating engine: re-pulls every live source daily and commits regenerated
+# layers so the map is always current. No secrets needed — all sources are public.
+on:
+  schedule:
+    - cron: "30 11 * * *"   # 06:30 America/Chicago (after overnight ME updates)
+  workflow_dispatch: {}      # allow manual runs
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Run live refresh
+        run: bash scripts/refresh.sh
+      - name: Commit refreshed data
+        run: |
+          git config user.name  "savespots-bot"
+          git config user.email "bot@savespots.local"
+          git add data/clean
+          git diff --cached --quiet || git commit -m "data: daily live refresh $(date -u +%F)"
+          git push
