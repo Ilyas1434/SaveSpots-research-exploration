@@ -1,3 +1,8 @@
+# Secrets — API keys/tokens (never commit)
+.env
+.env.*
+!.env.example
+
 # Raw data snapshots (large, re-generatable)
 data/raw/
 
@@ -14,3 +19,4 @@ data/raw/
 __pycache__/
 *.pyc
 .DS_Store
+.vercel
