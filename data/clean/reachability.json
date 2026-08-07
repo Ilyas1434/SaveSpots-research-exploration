@@ -1,8 +1,8 @@
 {
-  "total_with_both_zips": 10088,
-  "died_in_home_zip": 5824,
-  "pct_home_zip": 57.7,
-  "pct_away": 42.3,
-  "interpretation": "57.7% of Chicago opioid deaths occur in the victim's home ZIP code \u2014 consistent with using at/near home, often alone. This is exactly the scenario a fixed box cannot reach in time, and why TAKE-HOME distribution (carry it with you) is the right mechanism: the naloxone goes home with the person who picked it up.",
+  "total_with_both_zips": 10095,
+  "died_in_home_zip": 5831,
+  "pct_home_zip": 57.8,
+  "pct_away": 42.2,
+  "interpretation": "57.8% of Chicago opioid deaths occur in the victim's home ZIP code \u2014 consistent with using at/near home, often alone. This is exactly the scenario a fixed box cannot reach in time, and why TAKE-HOME distribution (carry it with you) is the right mechanism: the naloxone goes home with the person who picked it up.",
   "caveat": "ZIP-match is a coarse proxy; residence street address is not public."
 }
