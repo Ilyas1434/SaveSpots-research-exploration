@@ -3,64 +3,79 @@
   "metric": "Provisional drug-overdose deaths, 12-month-ending (all drugs, CDC VSRR)",
   "series_desc_recent_first": [
     {
+      "month_ending": "2026-03-31",
+      "count_12mo": 943,
+      "pct_pending": 24.8
+    },
+    {
+      "month_ending": "2026-02-28",
+      "count_12mo": 967,
+      "pct_pending": 24.2
+    },
+    {
+      "month_ending": "2026-01-31",
+      "count_12mo": 960,
+      "pct_pending": 21.6
+    },
+    {
       "month_ending": "2025-12-31",
-      "count_12mo": 964,
-      "pct_pending": 19.7
+      "count_12mo": 965,
+      "pct_pending": 17.0
     },
     {
       "month_ending": "2025-11-30",
-      "count_12mo": 972,
-      "pct_pending": 19.2
+      "count_12mo": 973,
+      "pct_pending": 17.8
     },
     {
       "month_ending": "2025-10-31",
-      "count_12mo": 987,
-      "pct_pending": 17.5
+      "count_12mo": 988,
+      "pct_pending": 16.3
     },
     {
       "month_ending": "2025-09-30",
       "count_12mo": 991,
-      "pct_pending": 18.2
+      "pct_pending": 17.7
     },
     {
       "month_ending": "2025-08-31",
       "count_12mo": 1028,
-      "pct_pending": 18.2
+      "pct_pending": 18.0
     },
     {
       "month_ending": "2025-07-31",
       "count_12mo": 1065,
-      "pct_pending": 20.0
+      "pct_pending": 19.7
     },
     {
       "month_ending": "2025-06-30",
       "count_12mo": 1119,
-      "pct_pending": 20.5
+      "pct_pending": 20.2
     },
     {
       "month_ending": "2025-05-31",
       "count_12mo": 1135,
-      "pct_pending": 19.7
+      "pct_pending": 19.5
     },
     {
       "month_ending": "2025-04-30",
       "count_12mo": 1179,
-      "pct_pending": 20.6
+      "pct_pending": 20.4
     },
     {
       "month_ending": "2025-03-31",
       "count_12mo": 1246,
-      "pct_pending": 22.0
+      "pct_pending": 21.8
     },
     {
       "month_ending": "2025-02-28",
       "count_12mo": 1277,
-      "pct_pending": 21.0
+      "pct_pending": 20.8
     },
     {
       "month_ending": "2025-01-31",
       "count_12mo": 1306,
-      "pct_pending": 22.6
+      "pct_pending": 22.3
     },
     {
       "month_ending": "2024-12-31",
@@ -106,27 +121,12 @@
       "month_ending": "2024-04-30",
       "count_12mo": 1717,
       "pct_pending": 24.6
-    },
-    {
-      "month_ending": "2024-03-31",
-      "count_12mo": 1760,
-      "pct_pending": 24.1
-    },
-    {
-      "month_ending": "2024-02-29",
-      "count_12mo": 1823,
-      "pct_pending": 24.5
-    },
-    {
-      "month_ending": "2024-01-31",
-      "count_12mo": 1869,
-      "pct_pending": 23.1
     }
   ],
   "latest": {
-    "month_ending": "2025-12-31",
-    "count_12mo": 964,
-    "pct_pending": 19.7
+    "month_ending": "2026-03-31",
+    "count_12mo": 943,
+    "pct_pending": 24.8
   },
-  "lag_note": "Most recent 12-mo-ending value (2025-12-31) has 19.7% of records still pending \u2014 i.e. it is an UNDERCOUNT that will rise. Treat recent months as a floor, not a final number."
+  "lag_note": "Most recent 12-mo-ending value (2026-03-31) has 24.8% of records still pending \u2014 i.e. it is an UNDERCOUNT that will rise. Treat recent months as a floor, not a final number."
 }
